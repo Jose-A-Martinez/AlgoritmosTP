@@ -36,9 +36,8 @@ def aceptarCancelar(mensaje, opcion1, opcion2):
         
     return opc
     
-
-# Función para validar opción ingresada en numeros/letras, con mensaje
-def validarOpcion(mensaje,ini,fin):
+# Función para validar opción ingresada en numeros/letras, con mensaje. 
+def validarOpcion(mensaje,ini,fin): # (Var mensaje,ini,fin : str)
     ini = ini.lower() #para evitar errores de mayusculas y minusculas en el codigo
     fin = fin.lower()
     print(f"{mensaje} \n\nIngrese una opción entre {ini} y {fin}: ")
@@ -59,7 +58,17 @@ def validarOpcion(mensaje,ini,fin):
 #    limpiarPantalla() #si borra mal quitar
 #    return opc
     return opc
-
+# Procedimiento para validar tipo de dato
+def validarFloat(numero,error):
+    dato = False
+    while dato == False:
+        try:
+            numero = float(input("Ingrese un número con formato decimal (ejemplo: 1234.56): "))
+        except ValueError:
+            print(error)  
+        else:
+            dato = True
+            return numero
 
 # Procedimiento para contar cantidad de registros en un arreglo
 def contarRegistros(arrerglo):
@@ -70,22 +79,49 @@ def contarRegistros(arrerglo):
         cont = cont + 1   
     return cont
 
-# Procedimiento para Ordenar los arreglos descendente
-def ordenar(ARREGLO, CODIGO):
+# Procedimiento para Ordenar los arreglos ascendente
+#def ordenar(ARREGLO, CODIGO):
+#    columnas1 = 0 
+#    while columnas1 < 99 and ARREGLO[0][columnas1] != "":
+#        columnas1 += 1
+#    columnas2 = 0
+#    while columnas2 < 2 and CODIGO[0][columnas2] != "":
+#        columnas2 += 1
+#
+#    posFinal = contarRegistros(ARREGLO)
+#    for i in range(posFinal - 1):
+#        for j in range(i+1, posFinal):
+#            if ARREGLO[i][0].lower() > ARREGLO[j][0].lower():
+#                for col in range(columnas1):
+#                    aux1 = ARREGLO[i][col]
+#                    ARREGLO[i][col] = ARREGLO[j][col]
+#                    ARREGLO[j][col] = aux1
+#                for col2 in range (columnas2):
+#                    aux2 = CODIGO[i][col2]
+#                    CODIGO[i][col2] = CODIGO[j][col2]
+#                    CODIGO[j][col2] = aux2
+
+def ordenar(ARREGLO, CODIGO, PRECIO):
+
+
     posFinal = contarRegistros(ARREGLO)
     for i in range(posFinal - 1):
         for j in range(i+1, posFinal):
-            if ARREGLO[i][0].lower() < ARREGLO[j][0].lower():
-                for col in range(4):
+            if ARREGLO[i][0].lower() > ARREGLO[j][0].lower():
+                for col in range(5):
                     aux1 = ARREGLO[i][col]
                     ARREGLO[i][col] = ARREGLO[j][col]
                     ARREGLO[j][col] = aux1
-                for col2 in range (2):
+                for col2 in range(2):
                     aux2 = CODIGO[i][col2]
                     CODIGO[i][col2] = CODIGO[j][col2]
                     CODIGO[j][col2] = aux2
+                for col3 in range(1):
+                    aux3 = PRECIO[i][col3]
+                    PRECIO[i][col3] = PRECIO[j][col3]
+                    PRECIO[j][col3] = aux3
 
-# Procedimiento para buscar codigos de aerolineas
+# Procedimiento para busqueda dicotomica
 def buscarDicotomica(ARREGLO, COD):
     inf = 0
     sup = contarRegistros(ARREGLO)-1
@@ -100,6 +136,17 @@ def buscarDicotomica(ARREGLO, COD):
         return True
     else:
         return False
+
+# Procedimiento para buscqueda secuencial dinamico para cuaquier arreglo
+def buscarSecuencial(ARREGLO,COD):
+    cont = contarRegistros(ARREGLO)# 100 es el maximo de registros definidos en los arreglos del TP
+    inicio = 0
+    while inicio < cont: 
+        if ARREGLO[inicio][0] == COD:
+            inicio = cont # si se encuentra el codigo, se sale del while
+            return True
+        inicio = inicio + 1
+    return False
 
 # Procedimiento listarGestionNovedades 
 def mostrarGestionNovedades ():
@@ -130,16 +177,16 @@ def gestionDeNovedades ():
     limpiarPantalla()
 
 # Procedimiento para precargar aerolineas
-def precargarAerolineas(AEROLINEAS): #(Var AEROLINEAS : aerolineas)
+def precargarAerolineas(AEROLINEAS): #(Var AEROLINEAS : aerolineas) STR
     # codAerolinea = 1
-    AEROLINEAS[0][0] = "1" #Codigo de aerolínea
+    AEROLINEAS[0][0] = "aerolinea 1" #Codigo de aerolínea
     AEROLINEAS[0][1] = "Aerolíneas Argentinas" #nombre de aerolínea
     AEROLINEAS[0][2] = "AEP"#codigoIATA
     AEROLINEAS[0][3] = "Aerolíneas Arg. Buenos Aires, Buenos Aires, Argentina - Jorge Newbery" #descripcion
     AEROLINEAS[0][4] = "314" # codigo de pais
 
     # codAerolinea = 2
-    AEROLINEAS[1][0] = "2"
+    AEROLINEAS[1][0] = "aerolinea 2"
     AEROLINEAS[1][1] = "Aerolineas Argentinas"
     AEROLINEAS[1][2] = "ROS"
     AEROLINEAS[1][3] = "Rosario, Santa Fe, Argentina - Fisherton"
@@ -151,6 +198,41 @@ def precargarAerolineas(AEROLINEAS): #(Var AEROLINEAS : aerolineas)
     AEROLINEAS[1][2] = "codigoiata"
     AEROLINEAS[1][3] = "descripcion"
     AEROLINEAS[1][4] = "codigopais"
+
+# codVuelo int              array codigos_vuelos
+# asientosDisponibles int
+# codAerolinea STR 5        array vuelos
+# origenVuelo STR 50
+# destinoVuelo STR 50
+# fechaSalidaVuelo STR 10
+# horaSalidaVuelo STR 5
+# precioVuelo DECIMAL       array precio_vuelos
+
+# Procedimiento para precargar codigos de vuelos
+def precargarCodigosVuelos(CODIGOS_VUELOS): #(Var CODIGOS_VUELOS : codigos_vuelos) INT
+    # codVuelo = 1
+    CODIGOS_VUELOS[0][0] = 1 #Codigo de vuelo
+    CODIGOS_VUELOS[0][1] = 100 #Cantidad de asientos disponibles
+    # codVuelo = 2
+    CODIGOS_VUELOS[1][0] = 2 #Codigo de vuelo
+    CODIGOS_VUELOS[1][1] = 100 #Cantidad de asientos disponibles
+
+# Procedimiento para precargar vuelos
+def precargarVuelos(VUELOS): #(Var VUELOS : vuelos) STR
+    # codVuelo = 1
+    VUELOS[0][0] = "aerolinea 2" #Codigo de aerolinea
+    VUELOS[0][1] = "ROS" #Origen del vuelo
+    VUELOS[0][2] = "BUE" #Destino del vuelo
+    VUELOS[0][3] = "01/01/2023" #Fecha de salida del vuelo
+    VUELOS[0][4] = "12:00" #Hora de salida del vuelo
+    #VUELOS[0][5] = "2" #codigo de vuelo (pk de la tabla codigos_vuelos)
+    # codVuelo = 2
+    VUELOS[1][0] = "aerolinea 1" #Codigo de aerolinea
+    VUELOS[1][1] = "EZE" #Origen del vuelo
+    VUELOS[1][2] = "DUB" #Destino del vuelo
+    VUELOS[1][3] = "01/01/2023" #Fecha de salida del vuelo
+    VUELOS[1][4] = "12:00" #Hora de salida del vuelo
+    #VUELOS[1][5] = "1" #codigo de vuelo
 
 # Procedimiento para precargar usuarios en el arreglo de Usuarios
 def CargaUsuarios(arregloCodigos,arregloUsuarios):#(Var arregloCodigos : codigos, Var arregloUsuarios : usuarios )
@@ -308,131 +390,159 @@ def menuAdmin(USR,AERO,COD,VUELO):
         limpiarPantalla()
 
 def mostrarGestiondeVuelos():
-    print ("--- Gestión de Vuelos ---\n")
-    print ("a) Crear vuelo")
-    print ("b) Modificar vuelo")
-    print ("c) Eliminar vuelo")
-    print ("d) Volver")
+    #print ("--- Gestión de Vuelos ---\n")
+    #print ("a) Crear vuelo")
+    #print ("b) Modificar vuelo")
+    #print ("c) Eliminar vuelo")
+    #print ("d) Volver")
+    mjs = "\n--- Gestión de Vuelos ---\na) Crear vuelo\nb) Modificar vuelo\nc) Eliminar vuelo\nd) Volver"
+    return mjs
 
 # Procedimiento listarMenuCeo      
 def mostrarMenuCeo ():
-    print ("--- Menú Ceo ---\n")
-    print ("1) Gestión de Vuelos")
-    print ("    a) Crear vuelo")
-    print ("    b) Modificar vuelo")
-    print ("    c) Eliminar vuelo")
-    print ("    d) Volver ") 
-    print ("2) Gestión de Promociones")
-    print("     a. Crear Promoción")
-    print("     b. Modificar Promoción")
-    print("     c. Eliminar Promoción")
-    print("     d. Volver")
-    print ("3) Reportes")
-    print("     a. Reporte de ventas de mi Aerolínea")
-    print("     b. Reporte de ocupación de Vuelos de mi Aerolínea")
-    print("     c. Volver")
-    print ("4) Cerrar sesión")
+    #print ("--- Menú Ceo ---\n")
+    #print ("1) Gestión de Vuelos")
+    #print ("    a) Crear vuelo")
+    #print ("    b) Modificar vuelo")
+    #print ("    c) Eliminar vuelo")
+    #print ("    d) Volver ") 
+    #print ("2) Gestión de Promociones")
+    #print("     a. Crear Promoción")
+    #print("     b. Modificar Promoción")
+    #print("     c. Eliminar Promoción")
+    #print("     d. Volver")
+    #print ("3) Reportes")
+    #print("     a. Reporte de ventas de mi Aerolínea")
+    #print("     b. Reporte de ocupación de Vuelos de mi Aerolínea")
+    #print("     c. Volver")
+    #print ("4) Cerrar sesión")
+    msj = "\n--- Menú Ceo ---\n1) Gestión de Vuelos\n     a)Crear vuelo\n     b)Modificar vuelo\n     c)Eliminar vuelo\n     d)Volver \n2) Gestión de Promociones\n     a)Crear Promoción\n     b)Modificar Promoción\n     c)Eliminar Promoción\n     d)Volver\n3) Reportes\n     a)Reporte de ventas de mi Aerolínea\n     b)Reporte de ocupación de Vuelos de mi Aerolínea\n     c)Volver\n4) Cerrar sesión"
+    return msj
 
-
-# Nueva versión adaptada y estructurada de crearVuelo
-import random
-def crearVuelo(USR, AERO, COD, VUELO, PRECIO_VUELOS, ASIENTOS_VUELOS):
+def crearVuelo(USR, AERO, COD, VUELO, PRECIO_VUELOS):
     limpiarPantalla()
-    mensaje = "¿Desea ver los vuelos cargados hasta el momento?"
-    if aceptarCancelar(mensaje, "a", "c") == "a":
+    mensaje = "Desea ver los vuelos cargados hasta el momento?"
+    if aceptarCancelar(mensaje, "A", "C") == "A" :
         print("Se muestra la lista de vuelos cargados hasta el momento")
-        # verVuelos(USR, AERO, COD, VUELO)  # Si tienes esta función, puedes llamarla aquí
-        input("Presione Enter para continuar...")
-
-    limpiarPantalla()
-    print("Ingresar los datos de los nuevos vuelos (máximo 20 por sesión):\n")
-    cantidadCreados = 0
-    pos = 0
-    # Buscar la primera posición libre en el arreglo de vuelos
-    while pos < len(VUELO) and VUELO[pos][0] != "":
-        pos += 1
-
+        #verVuelos(USR,AERO,COD,VUELO)
+    else:
+        limpiarPantalla() # SI no quiere que se muestre limpia pantalla y pide cargar datos
+    print("Ingresar los datos de los nuevos vuelos (maximo 20 vuelos) \n\n")
+    vuelosCreados = 0
     continuar = True
-    while cantidadCreados < 20 and pos < len(VUELO) and continuar:
-        codAerolinea = input("Ingrese el código de la aerolínea (o D para salir): ")
-        salir = False
-        if codAerolinea.upper() == "D":
-            salir = True
-        else:
-            while not buscarDicotomica(AERO, codAerolinea) and not salir:
-                print("Código de aerolínea no encontrado.")
-                codAerolinea = input("Ingrese un código válido de aerolínea (o D para salir): ")
-                if codAerolinea.upper() == "D":
-                    salir = True
-        if not salir:
-            origenVuelo = input("Ingrese el origen del vuelo: ")
-            destinoVuelo = input("Ingrese el destino del vuelo: ")
-            fechaSalidaVuelo = input("Ingrese la fecha de salida del vuelo (DD/MM/AAAA): ")
-            horaSalidaVuelo = input("Ingrese la hora de salida del vuelo (HH:MM): ")
-            precioVuelo = float(input("Ingrese el precio del vuelo: "))
-
-            # Guardar los datos en los arreglos
-            VUELO[pos][0] = codAerolinea
-            VUELO[pos][1] = origenVuelo
-            VUELO[pos][2] = destinoVuelo
-            VUELO[pos][3] = fechaSalidaVuelo
-            VUELO[pos][4] = horaSalidaVuelo
-            PRECIO_VUELOS[pos][0] = precioVuelo
-
-            # Inicializar los 240 asientos con estado aleatorio
-            estados = ["L", "O", "R"]
-            if len(ASIENTOS_VUELOS[pos]) < 240:
-                ASIENTOS_VUELOS[pos] = [""] * 240
-            for asiento in range(240):
-                ASIENTOS_VUELOS[pos][asiento] = random.choice(estados)
-
-            print("Vuelo creado exitosamente.\n")
-            cantidadCreados += 1
-            pos += 1
-
-            # Preguntar si desea cargar otro vuelo
-            if cantidadCreados < 20 and pos < len(VUELO):
-                if aceptarCancelar("¿Desea cargar otro vuelo?", "a", "c") == "c":
-                    continuar = False
-        else:
+    
+    
+    while continuar == True and vuelosCreados < 20: 
+        posicionVacia = contarRegistros(VUELO)
+        if  posicionVacia > 99:
+            input("No hay espacio para crear más vuelos. Enter para salir")
             continuar = False
+        else:# Se pide el código de la aerolínea
+            print("Codigos de aerolíneas existentes: \nCodigo - Aerolinea")
+            for i in range(posicionVacia):
+                print(f"{AERO[i][0]} - {AERO[i][1]}")
+            codAerolinea = input("Ingrese el código de la aerolínea. 0 para salir: ")
+            if codAerolinea == "0":
+                continuar = False
+            else:
+                while codAerolinea != "0":
+                    codAerolinea = str(input("Ingrese el código de la aerolínea. 0 para salir: "))
+                    while codAerolinea != "0" and buscarSecuencial(AERO, codAerolinea) == True:
+                        while buscarSecuencial(AERO, codAerolinea) == False:
+                            limpiarPantalla()
+                            mensaje = "Código de aerolínea no encontrado.\nDesea ingresar un nuevo código de aerolínea?\n"
+                            if aceptarCancelar(mensaje, "A", "C") == "A":
+                                print("Codigos de aerolíneas existentes: \nCodigo - Aerolinea")
+                                for i in range(posicionVacia):
+                                    print(f"{AERO[i][0]} - {AERO[i][1]}")
+                                codAerolinea = str(input("\nIngrese el código de la aerolínea: "))
+                                buscarSecuencial(AERO, codAerolinea)
+                            else :
+                                codAerolinea = "0"
+                                continuar = False
+                    else:
+                        limpiarPantalla()
+                        # Se pide el resto de los datos del vuelo
+                        origenVuelo = str(input("Ingrese el origen del vuelo: "))
+                        destinoVuelo = str(input("Ingrese el destino del vuelo: "))
+                        fechaSalidaVuelo = str(input("Ingrese la fecha de salida del vuelo (DD/MM/AAAA): "))
+                        horaSalidaVuelo = str(input("Ingrese la hora de salida del vuelo (HH:MM): "))
+                        #print("Ingresar el precio del vuelo. Mayor a 0 y con formato: 1234.56.\n")
+                        precioVuelo = validarFloat("Ingresar el precio del vuelo. Mayor a 0 y con formato: 1234.56", "El precio debe ser un número con formato decimal (ejemplo: 1234.56)")
+                        # Validar que el precio sea un número positivo
+                        while precioVuelo < 0:
+                            limpiarPantalla()
+                            print("El precio debe ser un número positivo")
+                            precioVuelo = validarFloat("Ingresar el precio del vuelo. Mayor a 0 y con formato: 1234.56", "El precio debe ser un número con formato decimal (ejemplo: 1234.56)")
+                        # Se crea el vuelo y se agrega al arreglo de vuelos
+                        print("Vuelo creado exitosamente")
+                        confirmar = aceptarCancelar("¿Desea confirmar el vuelo ingresado? (A/C)", "A", "C")
+                        if confirmar == "A":
+                            # Se crea el vuelo y se agrega al arreglo de vuelos
+                            #buscar posicion vacia del arreglo de codigos de vuelos
+                            posicionVacia = contarRegistros(VUELO)
+                            ordenar(VUELO, COD, PRECIO_VUELOS)
 
-    # Al finalizar, llamar a la función para listar vuelos por aerolínea
-    # ListarVuelosAerolineas()  # Implementa esta función según tu enunciado
-    input("Carga finalizada. Presione Enter para continuar...")
-          
-def gestiondeVuelos(USR,AERO,COD,VUELO):
+                            COD[posicionVacia][0] = posicionVacia + 1 # Codigo de vuelo
+                            COD[posicionVacia][1] = 240 # Por defecto segun tp
+
+                            VUELO[posicionVacia][0] = codAerolinea
+                            VUELO[posicionVacia][1] = origenVuelo
+                            VUELO[posicionVacia][2] = destinoVuelo
+                            VUELO[posicionVacia][3] = fechaSalidaVuelo
+                            VUELO[posicionVacia][4] = horaSalidaVuelo
+                            
+                            PRECIO_VUELOS[posicionVacia][0] = precioVuelo
+                            
+                            vuelosCreados += 1
+
+                        elif continuar == True and vuelosCreados < 20 and posicionVacia < 99:
+                            if aceptarCancelar("¿Desea cargar otro vuelo?", "a", "c") == "c":
+                                continuar = False
+                
+
+                # Estructura entidad VUELOS 100 filas 8 columna
+                        # codVuelo int              array codigos_vuelos
+                        # asientosDisponibles int
+                        # codAerolinea STR 5        array vuelos
+                        # origenVuelo STR 50
+                        # destinoVuelo STR 50
+                        # fechaSalidaVuelo STR 10
+                        # horaSalidaVuelo STR 5
+                        # precioVuelo DECIMAL       array precio_vuelos
+            
+def gestiondeVuelos(USR, AERO, COD, VUELO, PRECIO_VUELOS):
     limpiarPantalla()
-    mostrarGestiondeVuelos ()
-    submenu = validarOpcion ("a", "d")
+    mensaje = mostrarGestiondeVuelos ()
+    submenu = validarOpcion (mensaje,"a", "d")
     while submenu != "d":
         if submenu == "a":
-            crearVuelo(USR,AERO,COD,VUELO)
+            crearVuelo(USR, AERO, COD, VUELO, PRECIO_VUELOS)
         elif submenu == "b":
             enConstruccion ()
             #modificarVuelo(USR,AERO,COD,VUELO)
         elif submenu == "c":
             enConstruccion ()
             #eliminarVuelo(USR,AERO,COD,VUELO)
-        mostrarMenuCeo ()
-        submenu = validarOpcion ("a", "d")
+        limpiarPantalla()
+        mensaje = mostrarGestiondeVuelos ()
+        submenu = validarOpcion (mensaje,"a", "d")
     
 # Procedimiento MenuCeo
-def menuCeo (USR,AERO,COD,VUELO):
-    mostrarMenuCeo ()
-    submenu = validarOpcion ("1", "4")
-
+def menuCeo (USR, AERO, COD, VUELO, PRECIO_VUELOS):
+    mensaje = mostrarMenuCeo ()
+    submenu = validarOpcion (mensaje,"1", "4")
     while submenu != "4":
         if submenu == "1": # Gestion de Vuelos
-            gestiondeVuelos(USR,AERO,COD,VUELO)
+            gestiondeVuelos(USR, AERO, COD, VUELO, PRECIO_VUELOS)
         elif submenu == "2": # Gestion de Promociones
             enConstruccion ()
         elif submenu == "3": # Reportes
             enConstruccion ()
-        mostrarMenuCeo ()
-        submenu = validarOpcion("1", "4")
+        mensaje = mostrarMenuCeo ()
+        submenu = validarOpcion (mensaje,"1", "4")
 
-# Procedimiento listarMenuCliente   
+# Funcion listarMenuCliente   
 def mostrarMenuUsuarios ():
     print ("--- Menú usuarios ---\n")
     print("1. Buscar Vuelos")
@@ -467,21 +577,21 @@ def menuUsuarios():
         submenu = validarOpcion ("1", "7")
 
 # Procedimiento mostrar menu segun tipo de usuario ingresado
-def menuTipo(USR, AERO, COD, VUELO, pos):
+def menuTipo(USR, AERO, COD, VUELO, PRECIO_VUELOS, codigoUsuario):
     global codUsuario
-    codUsuario = pos
+    codUsuario = codigoUsuario
     #limpiarPantalla()
-    if USR[pos][2] == "Administrador":
-        print(f"\n{USR[pos][0]}\nBienvenido al sistema de gestión de aerolíneas\n")
+    if USR[codigoUsuario][2] == "Administrador":
+        print(f"\n{USR[codigoUsuario][0]}\nBienvenido al sistema de gestión de aerolíneas\n")
         menuAdmin(USR,AERO,COD,VUELO)
         limpiarPantalla()
         input("Cerrando programa. Enter para salir")
         codUsuario = -1
-    if USR[pos][2] == "Ceo":
-        print(f"\n{USR[pos][0]}\nBienvenido al sistema de gestión de aerolíneas\n")
-        menuCeo(USR,AERO,COD,VUELO)
-    if USR[pos][2] == "Usuarios":
-        print(f"\n{USR[pos][0]}\nBienvenido al sistema de gestión de aerolíneas\n")
+    if USR[codigoUsuario][2] == "Ceo":
+        print(f"\n{USR[codigoUsuario][0]}\nBienvenido al sistema de gestión de aerolíneas\n")
+        menuCeo(USR, AERO, COD, VUELO, PRECIO_VUELOS)
+    if USR[codigoUsuario][2] == "Usuarios":
+        print(f"\n{USR[codigoUsuario][0]}\nBienvenido\n")
         menuUsuarios() 
 
 # Procedimiento para sección en construccion
@@ -565,14 +675,11 @@ def programaPrincipal():
     VUELOS = [None] * 99
     for f in range(99):
         VUELOS[f] = [""] * 5
-    # PRECIO_VUELOS = ARREGLO DE INT [0...99][0...1] DECIMAL
+    # PRECIO_VUELOS = ARREGLO DE INT [0...99][0...1] FLOAT
     PRECIO_VUELOS = [None] * 99
     for f in range(99):
         PRECIO_VUELOS[f] = [0,0] * 1
     # ASIENTOS_VUELOS = ARREGLO DE INT [0...99][0...2] INT
-    ASIENTOS_VUELOS = [None] * 99
-    for f in range(99):
-        ASIENTOS_VUELOS[f] = [0] * 2 # para codigo de vuelo y cantidad de asientos
 
     CargaUsuarios(CODIGOS_USUARIOS, USUARIOS)
     # Estructura entidad USUARIOS 100 filas 6 columnas
@@ -589,7 +696,8 @@ def programaPrincipal():
         # codigoIATA STR 3
         # descripcionAeroliena STR 200
         # codPais STR 3
-      
+    precargarCodigosVuelos(CODIGOS_VUELOS)
+    precargarVuelos(VUELOS)
     # Estructura entidad VUELOS 100 filas 8 columna
         # codVuelo int              array codigos_vuelos
         # asientosDisponibles int
@@ -601,7 +709,7 @@ def programaPrincipal():
         # precioVuelo DECIMAL       array precio_vuelos
 
     # aca habria que ordenar los arreglos de aerolineas y codigos para las busquedas dicotomicas. O hacer busqueda secuencial  borrar  
-    #ordenarArreglos(ARREGLO,CODIGOS)
+    ordenar(VUELOS,CODIGOS_VUELOS,PRECIO_VUELOS)
     
     #mostrarInicio()
     mensaje = mostrarInicio()
@@ -622,7 +730,7 @@ def programaPrincipal():
                 #Nota: Aca se mostraria acceso correcto
                 iniciarSesion(USUARIOS)
                 if codUsuario != -1:
-                    menuTipo(USUARIOS, AEROLINEAS,CODIGOS_VUELOS, VUELOS, codUsuario)
+                    menuTipo(USUARIOS, AEROLINEAS,CODIGOS_VUELOS, VUELOS,PRECIO_VUELOS, codUsuario)
                     limpiarPantalla()
                     # Si el usuario es administrador, se cierra el programa
                     if codUsuario == -1:
@@ -631,14 +739,14 @@ def programaPrincipal():
                         intentos = 3
                     ## Si el operador es Ceo o Usuario, se le pregunta si desea iniciar sesión con otro usuario
                     else:
-                        mensaje = "\nIniciar sesion."
-                        if aceptarCancelar(mensaje, "a", "c") == "a":
+                        mensaje = "\nInicio de sesion para Ceos o usuarios"
+                        if aceptarCancelar(mensaje, "A", "C") == "A":
                             codUsuario = -1
                         else:    
                             inicioSesion=False
                             codUsuario = -1
-                            mostrarInicio()
-                            opcion = validarOpcion("0","2")
+                            mensaje = mostrarInicio()
+                            opcion = validarOpcion(mensaje,"0","2")
                 else :
                     print("3 intentos de acceso fallidos. El programa se cerrará.\nPresione enter para salir")
                     input()
@@ -647,12 +755,12 @@ def programaPrincipal():
         elif opcion == "0": # Salir
             limpiarPantalla()
             mensaje ="Seguro desea cerrar el programa?"
-            if aceptarCancelar(mensaje, "a", "c") == "a":
+            if aceptarCancelar(mensaje, "A", "C") == "A":
                 limpiarPantalla()    
                 opcion = "-1"
             else:
-                mostrarInicio()
-                opcion = validarOpcion("0","2")
+                mensaje = mostrarInicio()
+                opcion = validarOpcion(mensaje,"0","2")
 
 
 # Declaración de la variable global codUsuario
